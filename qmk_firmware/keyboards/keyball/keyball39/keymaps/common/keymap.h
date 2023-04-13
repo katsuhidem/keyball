@@ -18,6 +18,12 @@
 #define EX_4 LT(4,KC_BSPC)
 #define EX_5 LT(2,KC_ENT)
 
+enum custom_mouse_keycodes {
+  CK_EnJIS = KEYBALL_SAFE_RANGE,
+  CK_EnUS,
+  MY_SAFE_RANGE
+};
+
 #define __QWERTY_L1__ KC_Q, KC_W, KC_E, KC_R, KC_T
 #define __QWERTY_L2__ KC_A, KC_S, KC_D, G_F, KC_G
 #define __QWERTY_L3__ KC_Z, KC_X, KC_C, KC_V, KC_B

@@ -21,6 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "quantum.h"
 
 #include "keymaps/common/keymap.h"
+#include "keymaps/common/config.h"
+#include "keymaps/common/twpair_on_jis.h"
 
 enum layer_number {
     _QWERTY = 0,
@@ -53,7 +55,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [3] = LAYOUT_universal(
     ____, ____, ____, ____, ____, ____, ____, ____, ____, ____,
-    ____, ____, ____, ____, ____, ____, ____, ____, ____, ____,
+    ____, ____, ____, CK_EnJIS, ____, ____, CK_EnUS, ____, ____, ____,
     ____, ____, ____, ____, ____, ____, ____, ____, ____, ____,
     ____, ____, ____, ____, ____, ____, ____, ____, ____, ____, ____, ____
   ),
@@ -85,8 +87,17 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #    include "lib/oledkit/oledkit.h"
 
 void oledkit_render_info_user(void) {
-    keyball_oled_render_keyinfo();
-    keyball_oled_render_ballinfo();
+  keyball_oled_render_keyinfo();
+  keyball_oled_render_ballinfo();
+
+  oled_write_P(PSTR("Layer:"), false);
+  oled_write(get_u8_str(get_highest_layer(layer_state), ' '), false);
+  oled_write_P(PSTR(" Mode:"), false);
+  if (user_config.jis){
+    oled_write_ln("JIS", false);
+  } else {
+    oled_write_ln(" US", false);
+  }
 }
 #endif
 
@@ -156,4 +167,21 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
       }
       break;
   }
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case CK_EnJIS:
+      set_keyboard_lang_to_jis(true);
+      return false;
+    case CK_EnUS:
+      set_keyboard_lang_to_jis(false);
+      return false;
+    default:
+      if (user_config.jis){
+        return twpair_on_jis(keycode, record);
+      }
+      break;
+  }
+  return true;
 }
