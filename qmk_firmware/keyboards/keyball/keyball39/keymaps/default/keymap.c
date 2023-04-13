@@ -20,35 +20,56 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "quantum.h"
 
+#include "keymaps/common/keymap.h"
+
+enum layer_number {
+    _QWERTY = 0,
+    _NUMBER,
+    _SYMBOL,
+};
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  // keymap for default
-  [0] = LAYOUT_universal(
-    KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                            KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     ,
-    KC_A     , KC_S     , KC_D     , KC_F     , KC_G     ,                            KC_H     , KC_J     , KC_K     , KC_L     , KC_MINS  ,
-    KC_Z     , KC_X     , KC_C     , KC_V     , KC_B     ,                            KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  ,
-    KC_LCTL  , KC_LGUI  , KC_LALT  ,LSFT_T(KC_LNG2),LT(1,KC_SPC),LT(3,KC_LNG1),KC_BSPC,LT(2,KC_ENT),LSFT_T(KC_LNG2),KC_RALT,KC_RGUI, KC_RSFT
+  [_QWERTY] = LAYOUT_wrapper(
+    __QWERTY_L1__, __QWERTY_R1__,
+    __QWERTY_L2__, __QWERTY_R2__,
+    __QWERTY_L3__, __QWERTY_R3__,
+    __QUERTY_L4__, __QUERTY_R4__
   ),
 
-  [1] = LAYOUT_universal(
-    KC_F1    , KC_F2    , KC_F3    , KC_F4    , KC_RBRC  ,                            KC_F6    , KC_F7    , KC_F8    , KC_F9    , KC_F10   ,
-    KC_F5    , KC_EXLM  , S(KC_6)  ,S(KC_INT3), S(KC_8)  ,                           S(KC_INT1), KC_BTN1  , KC_PGUP  , KC_BTN2  , KC_SCLN  ,
-    S(KC_EQL),S(KC_LBRC),S(KC_7)   , S(KC_2)  ,S(KC_RBRC),                            KC_LBRC  , KC_DLR   , KC_PGDN  , KC_BTN3  , KC_F11   ,
-    KC_INT1  , KC_EQL   , S(KC_3)  , _______  , _______  , _______  ,        TO(2) ,  TO(0)    , _______  , KC_RALT  , KC_RGUI  , KC_F12
+  [_NUMBER] = LAYOUT_wrapper(
+    __NUM2_L1__, __NUM2_R1__,
+    __NUM2_L2__, __NUM2_R2__,
+    __NUM2_L3__, __NUM2_R3__,
+    __NUM2_L4__, __NUM2_R4__
   ),
 
-  [2] = LAYOUT_universal(
-    KC_TAB   , KC_7     , KC_8     , KC_9     , KC_MINS  ,                            KC_NUHS  , _______  , KC_BTN3  , _______  , KC_BSPC  ,
-   S(KC_QUOT), KC_4     , KC_5     , KC_6     ,S(KC_SCLN),                            S(KC_9)  , KC_BTN1  , KC_UP    , KC_BTN2  , KC_QUOT  ,
-    KC_SLSH  , KC_1     , KC_2     , KC_3     ,S(KC_MINS),                           S(KC_NUHS), KC_LEFT  , KC_DOWN  , KC_RGHT  , _______  ,
-    KC_ESC   , KC_0     , KC_DOT   , KC_DEL   , KC_ENT   , KC_BSPC  ,      _______ ,  _______  , _______  , _______  , _______  , _______
+  [_SYMBOL] = LAYOUT_wrapper(
+    __SYMBOL_L1__, __SYMBOL_R1__,
+    __SYMBOL_L2__, __SYMBOL_R2__,
+    __SYMBOL_L3__, __SYMBOL_R3__,
+    __SYMBOL_L4__, __SYMBOL_R4__
   ),
 
   [3] = LAYOUT_universal(
-    RGB_TOG  , _______  , _______  , _______  , _______  ,                            RGB_M_P  , RGB_M_B  , RGB_M_R  , RGB_M_SW , RGB_M_SN ,
-    RGB_MOD  , RGB_HUI  , RGB_SAI  , RGB_VAI  , SCRL_DVI ,                            RGB_M_K  , RGB_M_X  , RGB_M_G  , RGB_M_T  , RGB_M_TW ,
-    RGB_RMOD , RGB_HUD  , RGB_SAD  , RGB_VAD  , SCRL_DVD ,                            CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , KBC_SAVE ,
-    QK_BOOT    , KBC_RST  , _______  , _______  , _______  , _______  ,      _______ ,  _______  , _______  , _______  , KBC_RST  , QK_BOOT
+    ____, ____, ____, ____, ____, ____, ____, ____, ____, ____,
+    ____, ____, ____, ____, ____, ____, ____, ____, ____, ____,
+    ____, ____, ____, ____, ____, ____, ____, ____, ____, ____,
+    ____, ____, ____, ____, ____, ____, ____, ____, ____, ____, ____, ____
+  ),
+
+  [4] = LAYOUT_wrapper(
+    __SP_L1__, __SP_R1__,
+    __SP_L2__, __SP_R2__,
+    __SP_L3__, __SP_R3__,
+    __SP_L4__, __SP_R4__
+  ),
+
+  [5] = LAYOUT_wrapper(
+    __MOUSE_L1__, __MOUSE_R1__,
+    __MOUSE_L2__, __MOUSE_R2__,
+    __MOUSE_L3__, __MOUSE_R3__,
+    __MOUSE_L4__, __MOUSE_R4__
   ),
 };
 // clang-format on
@@ -68,3 +89,71 @@ void oledkit_render_info_user(void) {
     keyball_oled_render_ballinfo();
 }
 #endif
+
+#define TAPPING_LAYER_TERM 230
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case G_F:
+      return 320;
+    case G_J:
+      return 320;
+    default:
+      return TAPPING_TERM;
+  }
+}
+
+enum combos {
+  LNG_EN,
+  LNG_JP,
+  CAP_WORD,
+  SK_BS,
+  SK_DEL,
+  SK_TAB,
+  BRACKET,
+  S_BRACKET,
+  PAREN,
+  COMBO_LENGTH
+};
+uint16_t COMBO_LEN = COMBO_LENGTH;
+
+const uint16_t PROGMEM fg_combo[] = {G_F, KC_G, COMBO_END};
+const uint16_t PROGMEM hj_combo[] = {KC_H, G_J, COMBO_END};
+const uint16_t PROGMEM yu_combo[] = {KC_Y, KC_U, COMBO_END};
+const uint16_t PROGMEM op_combo[] = {KC_O, KC_P, COMBO_END};
+const uint16_t PROGMEM dotslsh_combo[] = {KC_DOT, KC_SLSH, COMBO_END};
+const uint16_t PROGMEM as_combo[] = {KC_A, KC_S, COMBO_END};
+const uint16_t PROGMEM bracket_combo[] = {KC_COMM, KC_DOT, COMBO_END};
+const uint16_t PROGMEM a_bracket_combo[] = {LSFT_T(KC_COMM), LSFT_T(KC_DOT), COMBO_END};
+const uint16_t PROGMEM paren_combo[] = {KC_I, KC_O, COMBO_END};
+
+combo_t key_combos[] = {
+  [LNG_EN] = COMBO(fg_combo, KC_LNG2),
+  [LNG_JP] = COMBO(hj_combo, KC_LNG1),
+  [CAP_WORD] = COMBO(yu_combo, CW_TOGG),
+  [SK_BS] = COMBO(op_combo, KC_BSPC),
+  [SK_DEL] = COMBO(dotslsh_combo, KC_DEL),
+  [SK_TAB] = COMBO(as_combo, KC_TAB),
+  [BRACKET] = COMBO_ACTION(bracket_combo),
+  [S_BRACKET] = COMBO_ACTION(a_bracket_combo),
+  [PAREN] = COMBO_ACTION(paren_combo),
+};
+
+void process_combo_event(uint16_t combo_index, bool pressed) {
+  switch(combo_index) {
+    case BRACKET:
+      if (pressed) {
+        SEND_STRING("[]");
+      }
+      break;
+    case S_BRACKET:
+      if (pressed) {
+        SEND_STRING("{}");
+      }
+      break;
+    case PAREN:
+      if (pressed) {
+        SEND_STRING("()");
+      }
+      break;
+  }
+}
