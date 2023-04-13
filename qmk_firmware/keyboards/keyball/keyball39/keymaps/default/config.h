@@ -33,4 +33,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define RGBLIGHT_EFFECT_TWINKLE
 #endif
 
+#define IGNORE_MOD_TAP_INTERRUPT
 #define TAP_CODE_DELAY 5
