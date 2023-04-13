@@ -1,6 +1,7 @@
 typedef union {
   uint32_t raw;
   struct {
+    int16_t to_clickable_movement;
     bool jis : 1;
   };
 } user_config_t;

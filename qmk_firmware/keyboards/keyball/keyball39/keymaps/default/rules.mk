@@ -8,3 +8,4 @@ CAPS_WORD_ENABLE = yes
 
 SRC += keymaps/common/config.c
 SRC += keymaps/common/twpair_on_jis.c
+SRC += keymaps/common/auto_mouse.c

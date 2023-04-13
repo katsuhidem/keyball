@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "keymaps/common/keymap.h"
 #include "keymaps/common/config.h"
 #include "keymaps/common/twpair_on_jis.h"
+#include "keymaps/common/auto_mouse.h"
 
 enum layer_number {
     _QWERTY = 0,
@@ -77,8 +78,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // clang-format on
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    // Auto enable scroll mode when the highest layer is 3
-    keyball_set_scroll_mode(get_highest_layer(state) == 3);
+  // レイヤーとLEDを連動させる
+  uint8_t layer = biton32(state);
+  switch (layer)
+  {
+  case 1:
+    rgblight_sethsv(HSV_BLUE);
+    break;
+  case 2:
+    rgblight_sethsv(HSV_MAGENTA);
+    break;
+  case 5:
+    rgblight_sethsv(HSV_RED);
+    break;
+
+  default:
+    rgblight_sethsv(HSV_OFF);
+  }
+
     return state;
 }
 
@@ -88,10 +105,10 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 void oledkit_render_info_user(void) {
   keyball_oled_render_keyinfo();
-  keyball_oled_render_ballinfo();
 
   oled_write_P(PSTR("Layer:"), false);
   oled_write(get_u8_str(get_highest_layer(layer_state), ' '), false);
+  oledkit_render_auto_mouse();
   oled_write_P(PSTR(" Mode:"), false);
   if (user_config.jis){
     oled_write_ln("JIS", false);
@@ -170,18 +187,32 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  bool ret = true;
   switch (keycode) {
     case CK_EnJIS:
       set_keyboard_lang_to_jis(true);
-      return false;
+      ret = false;
+      break;
+
     case CK_EnUS:
       set_keyboard_lang_to_jis(false);
-      return false;
+      ret = false;
+      break;
+
     default:
       if (user_config.jis){
-        return twpair_on_jis(keycode, record);
+        ret = twpair_on_jis(keycode, record);
       }
       break;
   }
-  return true;
+
+  if (ret) {
+    ret = auto_mouse_process_record_user(keycode, record);
+  }
+
+  return ret;
+}
+
+report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
+  return auto_mouse_pointing_device_task_user(mouse_report);
 }

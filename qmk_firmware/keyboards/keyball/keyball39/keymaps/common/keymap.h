@@ -21,6 +21,12 @@
 enum custom_mouse_keycodes {
   CK_EnJIS = KEYBALL_SAFE_RANGE,
   CK_EnUS,
+  KC_MY_BTN1,
+  KC_MY_BTN2,
+  KC_MY_BTN3,
+  KC_MY_SCR,
+  KC_TO_CLICKABLE_INC,
+  KC_TO_CLICKABLE_DEC,
   MY_SAFE_RANGE
 };
 
@@ -70,7 +76,7 @@ enum custom_mouse_keycodes {
 
 #define __SP_L1__ RGB_TOG, RGB_MOD, RGB_RMOD, ____, ____
 #define __SP_L2__ SCRL_DVD, SCRL_DVI, CPI_D100, CPI_I100, ____
-#define __SP_L3__ ____, ____, ____, ____, ____
+#define __SP_L3__ KC_TO_CLICKABLE_INC, KC_TO_CLICKABLE_DEC, ____, ____, ____
 
 #define __SP_R1__ RGB_M_P, RGB_M_B, RGB_M_R, RGB_M_SW, RGB_M_SN
 #define __SP_R2__ RGB_M_K, RGB_M_X, RGB_M_G, RGB_M_T, RGB_M_TW
@@ -84,7 +90,7 @@ enum custom_mouse_keycodes {
 #define __MOUSE_L3__ ____, KC_F1, KC_F2, KC_F3, KC_F12
 
 #define __MOUSE_R1__ ____, ____, ____, ____, ____
-#define __MOUSE_R2__ ____, ____, ____, ____, ____
+#define __MOUSE_R2__ ____, KC_MY_BTN1, KC_MY_SCR, KC_MY_BTN2, ____
 #define __MOUSE_R3__ ____, ____, ____, ____, ____
 
 #define __MOUSE_L4__ XXXX, XXXX, XXXX, XXXX, XXXX, XXXX
