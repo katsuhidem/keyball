@@ -18,7 +18,7 @@
 #define EX_4 LT(4,KC_BSPC)
 #define EX_5 LT(2,KC_ENT)
 
-enum custom_mouse_keycodes {
+enum custom_common_keycodes {
   CK_EnJIS = KEYBALL_SAFE_RANGE,
   CK_EnUS,
   KC_MY_BTN1,
@@ -27,6 +27,8 @@ enum custom_mouse_keycodes {
   KC_MY_SCR,
   KC_TO_CLICKABLE_INC,
   KC_TO_CLICKABLE_DEC,
+  NUMBER,
+  SYMBOL,
   MY_SAFE_RANGE
 };
 
@@ -38,8 +40,8 @@ enum custom_mouse_keycodes {
 #define __QWERTY_R2__ KC_H, G_J, KC_K, KC_L, KC_SCLN
 #define __QWERTY_R3__ KC_N, KC_M, KC_COMM, KC_DOT, KC_SLSH
 
-#define __QUERTY_L4__ S_ES, KC_LCTL, KC_LALT, EX_1, EX_2, EX_3
-#define __QUERTY_R4__ EX_4, EX_5, XXXX, XXXX, XXXX, S_MI
+#define __QUERTY_L4__ S_ES, KC_LCTL, KC_LALT, EX_1, NUMBER, EX_3
+#define __QUERTY_R4__ EX_4, SYMBOL, XXXX, XXXX, XXXX, S_MI
 
 #define __SYMBOL_L1__ KC_BSLS, KC_EXLM, KC_AMPR, KC_PIPE, ____
 #define __SYMBOL_L2__ KC_HASH, KC_GRV, KC_DQT, KC_QUOT, KC_TILD

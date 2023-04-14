@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "keymaps/common/config.h"
 #include "keymaps/common/twpair_on_jis.h"
 #include "keymaps/common/auto_mouse.h"
+#include "keymaps/common/common.h"
 
 enum layer_number {
     _QWERTY = 0,
@@ -189,6 +190,16 @@ void process_combo_event(uint16_t combo_index, bool pressed) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   bool ret = true;
   switch (keycode) {
+    case NUMBER:
+      control_tap_hold(keycode, _NUMBER, 0, KC_SPC, 300, record);
+      ret = false;
+      break;
+
+    case SYMBOL:
+      control_tap_hold(keycode, _SYMBOL, 0, KC_ENT, 300, record);
+      ret = false;
+      break;
+
     case CK_EnJIS:
       set_keyboard_lang_to_jis(true);
       ret = false;
