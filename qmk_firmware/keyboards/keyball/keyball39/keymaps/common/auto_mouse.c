@@ -181,10 +181,10 @@ report_mouse_t auto_mouse_pointing_device_task_user(report_mouse_t mouse_report)
               while (my_abs(scroll_v_mouse_interval_counter) > scroll_v_threshold) {
                 if (scroll_v_mouse_interval_counter < 0) {
                   scroll_v_mouse_interval_counter += scroll_v_threshold;
-                  rep_v += scroll_v_threshold;
+                  rep_v -= scroll_v_threshold;
                 } else {
                   scroll_v_mouse_interval_counter -= scroll_v_threshold;
-                  rep_v -= scroll_v_threshold;
+                  rep_v += scroll_v_threshold;
                 }
 
               }
