@@ -14,7 +14,7 @@
 // layer
 #define EX_1 LT(5,KC_SPC)
 #define EX_2 LT(1,KC_SPC)
-#define EX_3 LT(3,KC_BTN1)
+#define EX_3 LT(3,KC_BSPC)
 #define EX_4 LT(4,KC_BSPC)
 #define EX_5 LT(2,KC_ENT)
 
